@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doublecmd DCVersion="1.0.11" ConfigVersion="13">
+  <Toolbars>
+    <MainToolbar>
+      <Row>
+        <Separator>
+          <Style>False</Style>
+        </Separator>
+        <Command>
+          <ID>{B556078A-05DD-421D-ACCA-D21CB66E9802}</ID>
+          <Icon>cm_executescript</Icon>
+          <Command>cm_ExecuteScript</Command>
+          <Param>%COMMANDER_PATH%\plugins\wdx\signoffwdx\signoff.lua</Param>
+          <Param>--update</Param>
+          <Param>1</Param>
+          <Param>%LU</Param>
+          <Param>--auto</Param>
+        </Command>
+        <Command>
+          <ID>{6D88ADA4-833F-467F-AFCD-0B2BD92DDD8A}</ID>
+          <Icon>cm_executescript</Icon>
+          <Command>cm_ExecuteScript</Command>
+          <Param>%COMMANDER_PATH%\plugins\wdx\signoffwdx\signoff.lua</Param>
+          <Param>--remove</Param>
+          <Param>1</Param>
+          <Param>%LU</Param>
+          <Param>--auto</Param>
+        </Command>
+        <Command>
+          <ID>{B556078A-05DD-421D-ACCA-D21CB66E9802}</ID>
+          <Icon>cm_executescript</Icon>
+          <Command>cm_ExecuteScript</Command>
+          <Param>%COMMANDER_PATH%\plugins\wdx\signoffwdx\signoff.lua</Param>
+          <Param>--update</Param>
+          <Param>2</Param>
+          <Param>%LU</Param>
+          <Param>--auto</Param>
+        </Command>
+        <Command>
+          <ID>{6D88ADA4-833F-467F-AFCD-0B2BD92DDD8A}</ID>
+          <Icon>cm_executescript</Icon>
+          <Command>cm_ExecuteScript</Command>
+          <Param>%COMMANDER_PATH%\plugins\wdx\signoffwdx\signoff.lua</Param>
+          <Param>--remove</Param>
+          <Param>2</Param>
+          <Param>%LU</Param>
+          <Param>--auto</Param>
+        </Command>
+        <Command>
+          <ID>{B556078A-05DD-421D-ACCA-D21CB66E9802}</ID>
+          <Icon>cm_executescript</Icon>
+          <Command>cm_ExecuteScript</Command>
+          <Param>%COMMANDER_PATH%\plugins\wdx\signoffwdx\signoff.lua</Param>
+          <Param>--update</Param>
+          <Param>3</Param>
+          <Param>%LU</Param>
+          <Param>--auto</Param>
+        </Command>
+        <Command>
+          <ID>{6D88ADA4-833F-467F-AFCD-0B2BD92DDD8A}</ID>
+          <Icon>cm_executescript</Icon>
+          <Command>cm_ExecuteScript</Command>
+          <Param>%COMMANDER_PATH%\plugins\wdx\signoffwdx\signoff.lua</Param>
+          <Param>--remove</Param>
+          <Param>3</Param>
+          <Param>%LU</Param>
+          <Param>--auto</Param>
+        </Command>
+      </Row>
+    </MainToolbar>
+  </Toolbars>
+  <Tabs>
+    <OpenedTabs>
+      <Right>
+        <Tab>
+          <FileView Type="columns">
+            <History>
+              <Entry Active="True">
+                <FileSource Type="FileSystem"/>
+                <Paths>
+                  <Path Filename="plugins">C:\Program Files\Double Commander\</Path>
+                  <Path Filename="..">C:\Program Files\Double Commander\plugins\</Path>
+                  <Path Filename="plugins">C:\Program Files\Double Commander\</Path>
+                  <Path Filename="..">C:\Program Files\Double Commander\plugins\</Path>
+                  <Path Filename="plugins">C:\Program Files\Double Commander\</Path>
+                  <Path Filename="wdx">C:\Program Files\Double Commander\plugins\</Path>
+                  <Path Filename="signoffwdx">C:\Program Files\Double Commander\plugins\wdx\</Path>
+                  <Path Filename="read_write_csvfile_to_dict.lua">C:\Program Files\Double Commander\plugins\wdx\signoffwdx\</Path>
+                </Paths>
+              </Entry>
+            </History>
+          </FileView>
+        </Tab>
+      </Right>
+    </OpenedTabs>
+  </Tabs>
+  <ColumnsSets DefaultTitleHash="540805403">
+    <ColumnsSet UseFrameCursor="False">
+      <Name>Default</Name>
+      <CustomView>False</CustomView>
+      <FileSystem>&lt;General&gt;</FileSystem>
+      <PixelsPerInch>96</PixelsPerInch>
+      <CursorBorder Enabled="False">
+        <Color>-2147483635</Color>
+      </CursorBorder>
+      <Columns>
+        <Column>
+          <Title>Signoff By</Title>
+          <FuncString>[Plugin(signoffwdx).Signoff By{}]</FuncString>
+          <Width>238</Width>
+          <Align>0</Align>
+          <Font>
+            <Name>default</Name>
+            <Size>10</Size>
+            <Style>1</Style>
+            <Quality>0</Quality>
+          </Font>
+          <TextColor>-2147483640</TextColor>
+          <Background>-2147483643</Background>
+          <Background2>-2147483643</Background2>
+          <MarkColor>255</MarkColor>
+          <CursorColor>-2147483635</CursorColor>
+          <CursorText>-2147483634</CursorText>
+          <InactiveCursorColor>-2147483645</InactiveCursorColor>
+          <InactiveMarkColor>255</InactiveMarkColor>
+          <UseInvertedSelection>False</UseInvertedSelection>
+          <UseInactiveSelColor>False</UseInactiveSelColor>
+          <Overcolor>True</Overcolor>
+        </Column>
+        <Column>
+          <Title>Reviewed By</Title>
+          <FuncString>[Plugin(signoffwdx).Reviewed By{}]</FuncString>
+          <Width>274</Width>
+          <Align>0</Align>
+          <Font>
+            <Name>default</Name>
+            <Size>10</Size>
+            <Style>1</Style>
+            <Quality>0</Quality>
+          </Font>
+          <TextColor>-2147483640</TextColor>
+          <Background>-2147483643</Background>
+          <Background2>-2147483643</Background2>
+          <MarkColor>255</MarkColor>
+          <CursorColor>-2147483635</CursorColor>
+          <CursorText>-2147483634</CursorText>
+          <InactiveCursorColor>-2147483645</InactiveCursorColor>
+          <InactiveMarkColor>255</InactiveMarkColor>
+          <UseInvertedSelection>False</UseInvertedSelection>
+          <UseInactiveSelColor>False</UseInactiveSelColor>
+          <Overcolor>True</Overcolor>
+        </Column>
+        <Column>
+          <Title>Approved By</Title>
+          <FuncString>[Plugin(signoffwdx).Approved By{}]</FuncString>
+          <Width>209</Width>
+          <Align>0</Align>
+          <Font>
+            <Name>default</Name>
+            <Size>10</Size>
+            <Style>1</Style>
+            <Quality>0</Quality>
+          </Font>
+          <TextColor>-2147483640</TextColor>
+          <Background>-2147483643</Background>
+          <Background2>-2147483643</Background2>
+          <MarkColor>255</MarkColor>
+          <CursorColor>-2147483635</CursorColor>
+          <CursorText>-2147483634</CursorText>
+          <InactiveCursorColor>-2147483645</InactiveCursorColor>
+          <InactiveMarkColor>255</InactiveMarkColor>
+          <UseInvertedSelection>False</UseInvertedSelection>
+          <UseInactiveSelColor>False</UseInactiveSelColor>
+          <Overcolor>True</Overcolor>
+        </Column>
+      </Columns>
+    </ColumnsSet>
+  </ColumnsSets>
+  <Plugins>
+    <WdxPlugins>
+      <WdxPlugin>
+        <Name>signoffwdx</Name>
+        <Path>C:\Program Files\Double Commander\plugins\wdx\signoffwdx\signoffwdx.lua</Path>
+        <DetectString>EXT="*"</DetectString>
+      </WdxPlugin>
+    </WdxPlugins>
+  </Plugins>
+</doublecmd>
