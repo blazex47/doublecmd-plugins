@@ -20,7 +20,7 @@ end
 function WriteCSDictToFile(CSVDict,CSVFilePath)
   local CSVFile = io.open(CSVFilePath, 'w+')
   if CSVFile ~= nil then
-    if CSVDict == nil then
+    if getTableSize(CSVDict) == 0 then
       CSVFile:write('\n')
     else
       r = {}
@@ -49,10 +49,10 @@ function split(inputstr, sep)
   return t
 end
 
--- function getTableSize(t)
---   local count = 0
---   for _ in pairs(t) do
---     count = count + 1
---   end
---   return count
--- end
+function getTableSize(t)
+  local count = 0
+  for _ in pairs(t) do
+    count = count + 1
+  end
+  return count
+end
