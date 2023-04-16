@@ -114,13 +114,6 @@
   </Tabs>
   <ColumnsSets DefaultTitleHash="540805403">
     <ColumnsSet UseFrameCursor="False">
-      <Name>Default</Name>
-      <CustomView>False</CustomView>
-      <FileSystem>&lt;General&gt;</FileSystem>
-      <PixelsPerInch>96</PixelsPerInch>
-      <CursorBorder Enabled="False">
-        <Color>-2147483635</Color>
-      </CursorBorder>
       <Columns>
         <Column>
           <Title>Signoff By</Title>
