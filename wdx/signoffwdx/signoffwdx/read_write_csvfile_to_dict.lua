@@ -7,9 +7,13 @@ function ReadCSVFileToDict(CSVFilePath)
   if CSVFile ~= nil then
     for line in CSVFile:lines() do
       local tokens = split(line, ",")
-      if #tokens > 1 then
+      if #tokens > 0 then
         local filepathkey = table.remove(tokens, 1)
-        result[filepathkey] = table.concat(tokens, " ")
+        if #tokens == 0 then
+          result[filepathkey] = ""
+        else
+          result[filepathkey] = table.concat(tokens, " ")
+        end
       end
     end
     CSVFile:close()

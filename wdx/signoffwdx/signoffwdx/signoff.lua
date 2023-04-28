@@ -85,7 +85,7 @@ if CSVDict[fields[tonumber(params[2])]] ~= nil then
   WriteCSDictToFile(CSVDict[fields[tonumber(params[2])]],dbName)
 end
 
-os.setenv('SignOffDB', 'Read')
+os.setenv('SignOffDB' .. fname, 'Read')
 
 if params[4] == '--auto' then
   DC.ExecuteCommand('cm_Refresh')

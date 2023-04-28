@@ -37,14 +37,11 @@ function ContentGetValue(FileName, FieldIndex, UnitIndex, flags)
   if CSVDict[fields[FieldIndex + 1]] == nil then
     CSVDict[fields[FieldIndex + 1]] = ReadCSVFileToDict(dbName)
   else
-    if os.getenv('SignOffDB') == 'Read' then
+    if os.getenv('SignOffDB' .. fname ) == 'Read' then
       CSVDict[fields[FieldIndex + 1]] = ReadCSVFileToDict(dbName)
-      os.setenv('SignOffDB', 'Done')
+      os.setenv('SignOffDB' .. fname , 'Done')
     end
   end
-  if CSVDict[fields[FieldIndex + 1]][FileName] ~= nil then
-    return CSVDict[fields[FieldIndex + 1]][FileName]
-  end
-  return nil
+  return CSVDict[fields[FieldIndex + 1]][FileName]
 end
 
