@@ -89,6 +89,27 @@
   </Toolbars>
   <Tabs>
     <OpenedTabs>
+      <Left>
+        <Tab>
+          <FileView Type="columns">
+            <History>
+              <Entry Active="True">
+                <FileSource Type="FileSystem"/>
+                <Paths>
+                  <Path Filename="plugins">C:\Program Files\Double Commander\</Path>
+                  <Path Filename="..">C:\Program Files\Double Commander\plugins\</Path>
+                  <Path Filename="plugins">C:\Program Files\Double Commander\</Path>
+                  <Path Filename="..">C:\Program Files\Double Commander\plugins\</Path>
+                  <Path Filename="plugins">C:\Program Files\Double Commander\</Path>
+                  <Path Filename="wdx">C:\Program Files\Double Commander\plugins\</Path>
+                  <Path Filename="signoffwdx">C:\Program Files\Double Commander\plugins\wdx\</Path>
+                  <Path Filename="read_write_csvfile_to_dict.lua">C:\Program Files\Double Commander\plugins\wdx\signoffwdx\</Path>
+                </Paths>
+              </Entry>
+            </History>
+          </FileView>
+        </Tab>
+      </Left>
       <Right>
         <Tab>
           <FileView Type="columns">
