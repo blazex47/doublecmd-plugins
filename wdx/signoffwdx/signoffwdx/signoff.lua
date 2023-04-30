@@ -70,10 +70,36 @@ if #lu == 0 then
 end
 
 if params[1] == '--update' then
-  result, userinput = Dialogs.InputQuery('signoff.lua', fields[tonumber(params[2])], false, '')
+  namelistfile ,err = io.open(SysUtils.ExtractFilePath(sn) .. 'namelist.txt', 'r')
+  if namelistfile == nil then
+    Dialogs.MessageBox('Error 4: ' .. err, 'signoff.lua', 0x0030)
+    return
+  end
+  count = 1
+  namelist = {}
+  for line in namelistfile:lines() do
+    namelist[count] = line
+    count = count + 1
+  end
+  namelistfile:close()  
+  username = Dialogs.InputListBox('signoff.lua', fields[tonumber(params[2])], namelist, 1)
+  if username == 'New Name' then
+    result, userinput = Dialogs.InputQuery('signoff.lua', fields[tonumber(params[2])], false, '')
+    if result == false then return end
+    username = userinput
+    namelist[#namelist + 1] = username
+    namelistfile ,err = io.open(SysUtils.ExtractFilePath(sn) .. 'namelist.txt', 'w')
+    if namelistfile == nil then
+      Dialogs.MessageBox('Error 5: ' .. err, 'signoff.lua', 0x0030)
+      return
+    end
+    namelistfile:write(table.concat(namelist, '\n') .. '\n')
+    namelistfile:close()
+  end
+  result, datetime = Dialogs.InputQuery('signoff.lua', fields[tonumber(params[2])], false, os.date("%d/%m/%Y"))
   if result == false then return end
   for i = 1, #lu do
-    CSVDict[fields[tonumber(params[2])]][lu[i]] = userinput .. " " .. os.date("%d/%m/%Y")
+    CSVDict[fields[tonumber(params[2])]][lu[i]] = username .. " " .. datetime
   end
 elseif params[1] == '--remove' then
   for i = 1, #lu do
