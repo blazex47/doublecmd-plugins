@@ -9,40 +9,24 @@ local fields = {
   "Approved By"
 }
 
+local status = {
+    "In progress",
+    "Ready for review",
+    "Inital review completed",
+    "Final review completed",
+    "On hold - wait for information",
+    "On hold - other"
+}
+
 local params = {...}
 local CSVDict = {}
 local lu = {}
-
--- Check if a folder exists
-function FolderExists(folderPath)
-  local file = io.open(folderPath, "r")
-  if file then
-    file:close()
-    return true
-  else
-    return false
-  end
-end
-
--- Create a hidden folder in the given directory if it doesn't exist
--- function CreateHiddenFolderIfNotExist(directory, folderName)
---   local fullPath = directory .. '\\' .. folderName
---   if not FolderExists(fullPath) then
---     os.execute('mkdir "' .. fullPath .. '"')
---     os.execute('attrib +h "' .. fullPath .. '"')
---     print("Hidden folder created: " .. fullPath)
---   else
---     print("Folder already exists: " .. fullPath)
---   end
---   return fullPath
--- end
 
 if #params == 0 then
   Dialogs.MessageBox('Check parameters!', 'signoff.lua', 0x0030)
   return
 end
 
--- hiddenPath = CreateHiddenFolderIfNotExist(DC.GetActivePanelPath(),"dblcmd_hidden")
 local sn = debug.getinfo(1).source
 if string.sub(sn, 1, 1) == '@' then sn = string.sub(sn, 2, -1) end
 fname = string.lower(fields[tonumber(params[2])])
@@ -96,10 +80,11 @@ if params[1] == '--update' then
     namelistfile:write(table.concat(namelist, '\n') .. '\n')
     namelistfile:close()
   end
-  result, datetime = Dialogs.InputQuery('signoff.lua', fields[tonumber(params[2])], false, os.date("%d/%m/%Y"))
+  state = Dialogs.InputListBox('signoff.lua', fields[tonumber(params[2])], status, 1)
+  result, finalmsg = Dialogs.InputQuery('signoff.lua', fields[tonumber(params[2])], false, state .. ' (' .. username .. ', '.. os.date("%d/%m/%Y") .. ')')
   if result == false then return end
   for i = 1, #lu do
-    CSVDict[fields[tonumber(params[2])]][lu[i]] = username .. " " .. datetime
+    CSVDict[fields[tonumber(params[2])]][lu[i]] = finalmsg
   end
 elseif params[1] == '--remove' then
   for i = 1, #lu do

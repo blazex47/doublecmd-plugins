@@ -12,7 +12,7 @@ function ReadCSVFileToDict(CSVFilePath)
         if #tokens == 0 then
           result[filepathkey] = ""
         else
-          result[filepathkey] = table.concat(tokens, " ")
+          result[filepathkey] = tokens[1] .. '(' .. tokens[2] .. ',' .. tokens[3] .. ')'
         end
       end
     end
@@ -31,7 +31,7 @@ function WriteCSDictToFile(CSVDict,CSVFilePath)
       c = 1
       for k, v in pairs(CSVDict) do
         if v ~= "" then
-          local tokens = split(v, " ")
+          local tokens = split(v, ",()")
           r[c] = k .. "," .. table.concat(tokens, ",")
           c = c + 1
         end
@@ -59,4 +59,21 @@ function getTableSize(t)
     count = count + 1
   end
   return count
+end
+
+function createHiddenFolder(folder_path)
+  local command
+  if package.config:sub(1, 1) == "\\" then
+      -- Windows
+      command = "mkdir " .. folder_path .. " && attrib +h " .. folder_path
+  else
+      -- Unix-like systems (Linux, macOS, etc.)
+      local hidden_folder_path = folder_path:gsub("([^/]+)$", ".%1")
+      command = "mkdir -p " .. hidden_folder_path
+  end
+  os.execute(command)
+end
+
+function getDirectoryPath(file_path)
+  return file_path:match("(.*[/\\])")
 end
