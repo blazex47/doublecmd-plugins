@@ -22,6 +22,31 @@ local params = {...}
 local CSVDict = {}
 local lu = {}
 
+
+function PromptForPassword() --zhixiong
+  result, password = Dialogs.InputQuery('signoff.lua', 'Enter password to proceed', true, '')
+  if result == false then return end
+  if password ~= '1' then
+    Dialogs.MessageBox('Invalid password', 'signoff.lua', 0x0030)
+    return PromptForPassword()
+  end
+  end
+  
+function WriteLog()--zhixiong
+  local sn = debug.getinfo(1).source
+  if string.sub(sn, 1, 1) == '@' then sn = string.sub(sn, 2, -1) end
+  local logName = SysUtils.ExtractFilePath(sn) .. "remove_log.csv"
+  local log = io.open(logName, 'a')
+  if log == nil then
+    Dialogs.MessageBox('Error writing log', 'signoff.lua', 0x0030)
+    return
+  end
+  log:write(os.date("%d/%m/%Y %H:%M:%S") .. "\n")
+  log:close()
+end
+
+
+
 if #params == 0 then
   Dialogs.MessageBox('Check parameters!', 'signoff.lua', 0x0030)
   return
@@ -86,11 +111,20 @@ if params[1] == '--update' then
   for i = 1, #lu do
     CSVDict[fields[tonumber(params[2])]][lu[i]] = finalmsg
   end
-elseif params[1] == '--remove' then
+  
+  
+elseif params[1] == '--remove' then --zhixiong
+  PromptForPassword()
   for i = 1, #lu do
     CSVDict[fields[tonumber(params[2])]][lu[i]] = ""
   end
+  
+  -- Write log entry--zhixiong
+  local now = os.date("%Y-%m-%d %H:%M:%S")
+  local logEntry = now .. ',' .. 'Records removed' .. '\n'
+  WriteLog()
 end
+
 
 if CSVDict[fields[tonumber(params[2])]] ~= nil then
   WriteCSDictToFile(CSVDict[fields[tonumber(params[2])]],dbName)
