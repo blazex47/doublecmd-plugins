@@ -22,6 +22,30 @@ local params = {...}
 local CSVDict = {}
 local lu = {}
 
+
+function PromptForPassword() --zhixiong
+  result, password = Dialogs.InputQuery('signoff.lua', 'Enter password to proceed', true, '')
+  if result == false then return end
+  if password ~= '1' then
+    Dialogs.MessageBox('Invalid password', 'signoff.lua', 0x0030)
+    return PromptForPassword()
+  end
+  end
+  
+function WriteLog(hiddenDir, logEntry, action ,content)--zhixiong
+  local logName = hiddenDir .. "change_log.csv"
+  local pcName = os.getenv("COMPUTERNAME")
+  local log = io.open(logName, 'a')
+  if log == nil then
+    Dialogs.MessageBox('Error writing log', 'signoff.lua', 0x0030)
+    return
+  end
+  log:write(logEntry .. "," .. action .. "," .. content .. "," .. pcName .. "," .. os.date("%d/%m/%Y %H:%M:%S") .. "\n")
+  log:close()
+end
+
+
+
 if #params == 0 then
   Dialogs.MessageBox('Check parameters!', 'signoff.lua', 0x0030)
   return
@@ -31,8 +55,8 @@ local sn = debug.getinfo(1).source
 if string.sub(sn, 1, 1) == '@' then sn = string.sub(sn, 2, -1) end
 fname = string.lower(fields[tonumber(params[2])])
 fname = string.gsub(fname, " ", "_")
-
-dbName = createHiddenFolderIfNotExist(trimQuotes(params[4]),'dblcmd_hidden') .. fname .. '.csv'
+hiddenDir = createHiddenFolderIfNotExist(trimQuotes(params[4]),'dblcmd_hidden')
+dbName = hiddenDir .. fname .. '.csv'
 dbNameKey = removeNonAlphanumeric(dbName)
 if CSVDict[fields[tonumber(params[2])] .. dbNameKey] == nil then
   CSVDict[fields[tonumber(params[2])] .. dbNameKey] = ReadCSVFileToDict(dbName)
@@ -86,10 +110,18 @@ if params[1] == '--update' then
   if result == false then return end
   for i = 1, #lu do
     CSVDict[fields[tonumber(params[2])] .. dbNameKey][lu[i]] = finalmsg
+    -- Write log entry
+    WriteLog(hiddenDir,lu[i],'update',finalmsg) 
   end
-elseif params[1] == '--remove' then
+  
+  
+elseif params[1] == '--remove' then --zhixiong
+  PromptForPassword()
   for i = 1, #lu do
+    local content = CSVDict[fields[tonumber(params[2])] .. dbNameKey][lu[i]]
     CSVDict[fields[tonumber(params[2])] .. dbNameKey][lu[i]] = ""
+    -- Write log entry--zhixiong
+    WriteLog(hiddenDir,lu[i],'remove',content)  
   end
 end
 

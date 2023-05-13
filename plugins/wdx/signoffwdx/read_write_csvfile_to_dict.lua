@@ -23,6 +23,7 @@ end
 
 function WriteCSDictToFile(CSVDict,CSVFilePath)
   local CSVFile = io.open(CSVFilePath, 'w+')
+  local pcName = os.getenv("COMPUTERNAME")
   if CSVFile ~= nil then
     if getTableSize(CSVDict) == 0 then
       CSVFile:write('\n')
@@ -32,7 +33,7 @@ function WriteCSDictToFile(CSVDict,CSVFilePath)
       for k, v in pairs(CSVDict) do
         if v ~= "" then
           local tokens = split(v, ",()")
-          r[c] = k .. "," .. table.concat(tokens, ",")
+          r[c] = k .. "," .. table.concat(tokens, ",") .. "," .. pcName .. "," .. os.date("%d/%m/%Y %H:%M:%S")
           c = c + 1
         end
       end
