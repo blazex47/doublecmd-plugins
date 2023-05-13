@@ -69,14 +69,14 @@ function createHiddenFolderIfNotExist(baseDir, folderName)
   if package.config:sub(1, 1) == "\\" then -- Windows
       path = baseDir .. "\\" .. folderName
       if not os.rename(path, path) then -- Check if folder exists
-          os.execute("mkdir " .. path) -- Create folder
-          os.execute("attrib +h " .. path) -- Set hidden attribute
+          os.execute('mkdir "' .. path .. '"') -- Create folder
+          os.execute('attrib +h "' .. path .. '"') -- Set hidden attribute
       end
       path = path .. "\\"
   else -- Linux, macOS, and other Unix-based systems
       path = baseDir .. "/" .. "." .. folderName
       if not os.rename(path, path) then -- Check if folder exists
-          os.execute("mkdir " .. path) -- Create hidden folder
+          os.execute('mkdir "' .. path .. '"') -- Create hidden folder
       end
       path = path .. "/"
   end
