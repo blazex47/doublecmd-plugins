@@ -61,19 +61,41 @@ function getTableSize(t)
   return count
 end
 
-function createHiddenFolder(folder_path)
-  local command
-  if package.config:sub(1, 1) == "\\" then
-      -- Windows
-      command = "mkdir " .. folder_path .. " && attrib +h " .. folder_path
-  else
-      -- Unix-like systems (Linux, macOS, etc.)
-      local hidden_folder_path = folder_path:gsub("([^/]+)$", ".%1")
-      command = "mkdir -p " .. hidden_folder_path
+function createHiddenFolderIfNotExist(baseDir, folderName)
+  local path
+
+  -- Detect the operating system
+  if package.config:sub(1, 1) == "\\" then -- Windows
+      path = baseDir .. "\\" .. folderName
+      if not os.rename(path, path) then -- Check if folder exists
+          os.execute("mkdir " .. path) -- Create folder
+          os.execute("attrib +h " .. path) -- Set hidden attribute
+      end
+      path = path .. "\\"
+  else -- Linux, macOS, and other Unix-based systems
+      path = baseDir .. "/" .. "." .. folderName
+      if not os.rename(path, path) then -- Check if folder exists
+          os.execute("mkdir " .. path) -- Create hidden folder
+      end
+      path = path .. "/"
   end
-  os.execute(command)
+
+  return path
 end
 
-function getDirectoryPath(file_path)
-  return file_path:match("(.*[/\\])")
+function getDirectory(filePath)
+  local directory = string.match(filePath, "(.-)[\\/][^\\/]-$")
+  return directory
+end
+
+function removeNonAlphanumeric(filePath)
+  local directory = string.gsub(filePath, "%W", "")
+  return directory
+end
+
+function trimQuotes(str)
+  if string.sub(str, 1, 1) == '"' and string.sub(str, -1) == '"' then
+      return string.sub(str, 2, -2)
+  end
+  return str
 end

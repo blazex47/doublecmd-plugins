@@ -33,15 +33,17 @@ function ContentGetValue(FileName, FieldIndex, UnitIndex, flags)
   if string.sub(sn, 1, 1) == '@' then sn = string.sub(sn, 2, -1) end
   fname = string.lower(fields[FieldIndex + 1])
   fname = string.gsub(fname, " ", "_")
-  local dbName = SysUtils.ExtractFilePath(sn) .. fname .. '.csv'
-  if CSVDict[fields[FieldIndex + 1]] == nil then
-    CSVDict[fields[FieldIndex + 1]] = ReadCSVFileToDict(dbName)
+  baseDir = getDirectory(FileName)
+  local dbName = createHiddenFolderIfNotExist(baseDir,'dblcmd_hidden') .. fname .. '.csv'
+  dbNameKey = removeNonAlphanumeric(dbName)
+  if CSVDict[fields[FieldIndex + 1] .. dbNameKey] == nil then
+    CSVDict[fields[FieldIndex + 1]  .. dbNameKey] = ReadCSVFileToDict(dbName)
   else
-    if os.getenv('SignOffDB' .. fname ) == 'Read' then
-      CSVDict[fields[FieldIndex + 1]] = ReadCSVFileToDict(dbName)
-      os.setenv('SignOffDB' .. fname , 'Done')
+    if os.getenv('SignOffDB' .. dbNameKey ) == 'Read' then
+      CSVDict[fields[FieldIndex + 1] .. dbNameKey] = ReadCSVFileToDict(dbName)
+      os.setenv('SignOffDB' .. dbNameKey , 'Done')
     end
   end
-  return CSVDict[fields[FieldIndex + 1]][FileName]
+  return CSVDict[fields[FieldIndex + 1] .. dbNameKey][FileName]
 end
 

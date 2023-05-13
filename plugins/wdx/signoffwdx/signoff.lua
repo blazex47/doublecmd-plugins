@@ -31,10 +31,11 @@ local sn = debug.getinfo(1).source
 if string.sub(sn, 1, 1) == '@' then sn = string.sub(sn, 2, -1) end
 fname = string.lower(fields[tonumber(params[2])])
 fname = string.gsub(fname, " ", "_")
-dbName = SysUtils.ExtractFilePath(sn) .. fname .. '.csv'
 
-if CSVDict[fields[tonumber(params[2])]] == nil then
-  CSVDict[fields[tonumber(params[2])]] = ReadCSVFileToDict(dbName)
+dbName = createHiddenFolderIfNotExist(trimQuotes(params[4]),'dblcmd_hidden') .. fname .. '.csv'
+dbNameKey = removeNonAlphanumeric(dbName)
+if CSVDict[fields[tonumber(params[2])] .. dbNameKey] == nil then
+  CSVDict[fields[tonumber(params[2])] .. dbNameKey] = ReadCSVFileToDict(dbName)
 end
 
 h, err = io.open(params[3], 'r')
@@ -84,20 +85,20 @@ if params[1] == '--update' then
   result, finalmsg = Dialogs.InputQuery('signoff.lua', fields[tonumber(params[2])], false, state .. ' (' .. username .. ', '.. os.date("%d/%m/%Y") .. ')')
   if result == false then return end
   for i = 1, #lu do
-    CSVDict[fields[tonumber(params[2])]][lu[i]] = finalmsg
+    CSVDict[fields[tonumber(params[2])] .. dbNameKey][lu[i]] = finalmsg
   end
 elseif params[1] == '--remove' then
   for i = 1, #lu do
-    CSVDict[fields[tonumber(params[2])]][lu[i]] = ""
+    CSVDict[fields[tonumber(params[2])] .. dbNameKey][lu[i]] = ""
   end
 end
 
-if CSVDict[fields[tonumber(params[2])]] ~= nil then
-  WriteCSDictToFile(CSVDict[fields[tonumber(params[2])]],dbName)
+if CSVDict[fields[tonumber(params[2])] .. dbNameKey] ~= nil then
+  WriteCSDictToFile(CSVDict[fields[tonumber(params[2])] .. dbNameKey],dbName)
 end
 
-os.setenv('SignOffDB' .. fname, 'Read')
+os.setenv('SignOffDB' .. dbNameKey, 'Read')
 
-if params[4] == '--auto' then
+if params[5] == '--auto' then
   DC.ExecuteCommand('cm_Refresh')
 end
