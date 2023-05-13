@@ -32,16 +32,15 @@ function PromptForPassword() --zhixiong
   end
   end
   
-function WriteLog()--zhixiong
-  local sn = debug.getinfo(1).source
-  if string.sub(sn, 1, 1) == '@' then sn = string.sub(sn, 2, -1) end
-  local logName = SysUtils.ExtractFilePath(sn) .. "remove_log.csv"
+function WriteLog(hiddenDir, logEntry, action ,content)--zhixiong
+  local logName = hiddenDir .. "change_log.csv"
+  local pcName = os.getenv("COMPUTERNAME")
   local log = io.open(logName, 'a')
   if log == nil then
     Dialogs.MessageBox('Error writing log', 'signoff.lua', 0x0030)
     return
   end
-  log:write(os.date("%d/%m/%Y %H:%M:%S") .. "\n")
+  log:write(logEntry .. "," .. action .. "," .. content .. "," .. pcName .. "," .. os.date("%d/%m/%Y %H:%M:%S") .. "\n")
   log:close()
 end
 
@@ -56,10 +55,11 @@ local sn = debug.getinfo(1).source
 if string.sub(sn, 1, 1) == '@' then sn = string.sub(sn, 2, -1) end
 fname = string.lower(fields[tonumber(params[2])])
 fname = string.gsub(fname, " ", "_")
-dbName = SysUtils.ExtractFilePath(sn) .. fname .. '.csv'
-
-if CSVDict[fields[tonumber(params[2])]] == nil then
-  CSVDict[fields[tonumber(params[2])]] = ReadCSVFileToDict(dbName)
+hiddenDir = createHiddenFolderIfNotExist(trimQuotes(params[4]),'dblcmd_hidden')
+dbName = hiddenDir .. fname .. '.csv'
+dbNameKey = removeNonAlphanumeric(dbName)
+if CSVDict[fields[tonumber(params[2])] .. dbNameKey] == nil then
+  CSVDict[fields[tonumber(params[2])] .. dbNameKey] = ReadCSVFileToDict(dbName)
 end
 
 h, err = io.open(params[3], 'r')
@@ -109,29 +109,28 @@ if params[1] == '--update' then
   result, finalmsg = Dialogs.InputQuery('signoff.lua', fields[tonumber(params[2])], false, state .. ' (' .. username .. ', '.. os.date("%d/%m/%Y") .. ')')
   if result == false then return end
   for i = 1, #lu do
-    CSVDict[fields[tonumber(params[2])]][lu[i]] = finalmsg
+    CSVDict[fields[tonumber(params[2])] .. dbNameKey][lu[i]] = finalmsg
+    -- Write log entry
+    WriteLog(hiddenDir,lu[i],'update',finalmsg) 
   end
   
   
 elseif params[1] == '--remove' then --zhixiong
   PromptForPassword()
   for i = 1, #lu do
-    CSVDict[fields[tonumber(params[2])]][lu[i]] = ""
+    local content = CSVDict[fields[tonumber(params[2])] .. dbNameKey][lu[i]]
+    CSVDict[fields[tonumber(params[2])] .. dbNameKey][lu[i]] = ""
+    -- Write log entry--zhixiong
+    WriteLog(hiddenDir,lu[i],'remove',content)  
   end
-  
-  -- Write log entry--zhixiong
-  local now = os.date("%Y-%m-%d %H:%M:%S")
-  local logEntry = now .. ',' .. 'Records removed' .. '\n'
-  WriteLog()
 end
 
-
-if CSVDict[fields[tonumber(params[2])]] ~= nil then
-  WriteCSDictToFile(CSVDict[fields[tonumber(params[2])]],dbName)
+if CSVDict[fields[tonumber(params[2])] .. dbNameKey] ~= nil then
+  WriteCSDictToFile(CSVDict[fields[tonumber(params[2])] .. dbNameKey],dbName)
 end
 
-os.setenv('SignOffDB' .. fname, 'Read')
+os.setenv('SignOffDB' .. dbNameKey, 'Read')
 
-if params[4] == '--auto' then
+if params[5] == '--auto' then
   DC.ExecuteCommand('cm_Refresh')
 end
